@@ -1,37 +1,23 @@
 let fact = document.querySelector('#fact');
 let factText = document.querySelector('#factText');
-
-let numberInput = document.querySelector('#number-input');
-// numberInput.addEventListener('input', getFactAjax);
-numberInput.addEventListener('input', getFactFetch);
-
-
-// function getFactAjax() {
-// 	let number = numberInput.value;
-
-// 	let xhr = new XMLHttpRequest();
-// 	xhr.open('GET', 'http://numbersapi.com/'+number);
-
-// 	xhr.onload = function(){
-// 		if(this.status == 200 && number != ''){
-// 			fact.style.display = 'block'
-// 			factText.innerText = this.responseText;
-// 		}
-// 	}
-
-// 	xhr.send();
-// }
+let factBtn = document.querySelector('#factBtn');
+factBtn.addEventListener('click', getFactFetch);
 
 function getFactFetch() {
-	let number = numberInput.value;
-
-	fetch('http://www.numbersapi.com/' + number)
-		.then(response => response.text())
+	fetch("https://numbersapi.p.rapidapi.com/random/trivia?max=20&fragment=true&min=10&json=true", {
+		"method": "GET",
+		"headers": {
+			"x-rapidapi-host": "numbersapi.p.rapidapi.com",
+			"x-rapidapi-key": "fa57ef7f4fmshce549935abf9191p1b6a19jsna8ae3a5aeb01"
+		}
+	})
+		.then(response =>
+			response.json())
 		.then(data => {
-			if(number != '') {
-				fact.style.display = 'block'
-				factText.innerText = data;
-			}
+			fact.style.display = 'block'
+			factText.innerText = `${data.number} ${data.text}`;
 		})
-		.catch(err => console.log(err))
+		.catch(err => {
+			console.log(err);
+		});
 }
